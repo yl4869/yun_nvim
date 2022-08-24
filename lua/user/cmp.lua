@@ -8,6 +8,11 @@ if not snip_status_ok then
 	return
 end
 
+local lspkind_status_ok, lspkind = pcall(require, "lspkind")
+if not lspkind_status_ok then
+	return
+end
+
 require("luasnip/loaders/from_vscode").lazy_load()
 
 local check_backspace = function()
@@ -15,33 +20,50 @@ local check_backspace = function()
 	return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
 end
 
-local kind_icons = {
-	Text = "",
-	Method = "",
-	Function = "",
-	Constructor = "",
-	Field = "",
-	Variable = "",
-	Class = "",
-	Interface = "",
-	Module = "",
-	Property = "",
-	Unit = "",
-	Value = "",
-	Enum = "",
-	Keyword = "",
-	Snippet = "",
-	Color = "",
-	File = "",
-	Reference = "",
-	Folder = "",
-	EnumMember = "",
-	Constant = "",
-	Struct = "",
-	Event = "",
-	Operator = "",
-	TypeParameter = "",
-}
+lspkind.init({
+	-- default: true
+	-- with_text = true,
+	-- defines how annotations are shown
+	-- default: symbol
+	-- options: 'text', 'text_symbol', 'symbol_text', 'symbol'
+	mode = "symbol_text",
+	-- default symbol map
+	-- can be either 'default' (requires nerd-fonts font) or
+	-- 'codicons' for codicon preset (requires vscode-codicons font)
+	--
+	-- default: 'default'
+	preset = "codicons",
+	-- override preset symbols
+	--
+	-- default: {}
+	symbol_map = {
+		Text = "",
+		Method = "",
+		Function = "",
+		Constructor = "",
+		Field = "ﰠ",
+		Variable = "",
+		Class = "ﴯ",
+		Interface = "",
+		Module = "",
+		Property = "ﰠ",
+		Unit = "塞",
+		Value = "",
+		Enum = "",
+		Keyword = "",
+		Snippet = "",
+		Color = "",
+		File = "",
+		Reference = "",
+		Folder = "",
+		EnumMember = "",
+		Constant = "",
+		Struct = "פּ",
+		Event = "",
+		Operator = "",
+		TypeParameter = "",
+	},
+})
 
 cmp.setup({
 	snippet = {
@@ -55,8 +77,8 @@ cmp.setup({
 		["<C-j>"] = cmp.mapping.select_next_item(),
 		["<C-b>"] = cmp.mapping(cmp.mapping.scroll_docs(-1), { "i", "c" }),
 		["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(1), { "i", "c" }),
-		["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-		["<C-e>"] = cmp.mapping({
+		["<A-,>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+		["<A-.>"] = cmp.mapping({
 			i = cmp.mapping.abort(),
 			c = cmp.mapping.close(),
 		}),
@@ -94,18 +116,15 @@ cmp.setup({
 	}),
 	formatting = {
 		fields = { "kind", "abbr", "menu" },
-		format = function(entry, vim_item)
-			vim_item.kind = kind_icons[vim_item.kind]
-			vim_item.menu = ({
-				nvim_lsp = "",
-				nvim_lua = "",
-				luasnip = "",
-				buffer = "",
-				path = "",
-				emoji = "",
-			})[entry.source.name]
-			return vim_item
-		end,
+		format = lspkind.cmp_format({
+			mode = "symbol_text",
+			maxwidth = 50,
+			before = function(entry, vim_item)
+				-- Source 显示提示来源
+				vim_item.menu = "[" .. string.upper(entry.source.name) .. "]"
+				return vim_item
+			end,
+		}),
 	},
 	sources = {
 		{ name = "nvim_lsp" },
