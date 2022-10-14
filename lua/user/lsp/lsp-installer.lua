@@ -17,6 +17,7 @@ local servers = {
 	"jsonls",
 	"yamlls",
     "svls",
+    "sqls",
 }
 
 lsp_installer.setup({
@@ -57,7 +58,7 @@ for _, server in pairs(servers) do
         require("user.lsp.settings.rust")
     end
 
-    if server ~= "rust_analyzer" then 
+    if server ~= "rust_analyzer" then
         lspconfig[server].setup(opts)
     end
 end
