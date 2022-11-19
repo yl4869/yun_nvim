@@ -75,7 +75,11 @@ return packer.startup(function(use)
 
 	-- LSP
 	use({ "neovim/nvim-lspconfig" }) -- enable LSP
-	use({ "williamboman/nvim-lsp-installer" }) -- simple to use language server installer
+  use { "williamboman/mason.nvim" }
+  use { "williamboman/mason-lspconfig.nvim" }
+  use { "jayp0521/mason-null-ls.nvim" }
+  use { "jayp0521/mason-nvim-dap.nvim"}
+  -- use({ "williamboman/nvim-lsp-installer" }) -- simple to use language server installer
 	use({ "jose-elias-alvarez/null-ls.nvim" }) -- for formatters and linters
 	use({ "RRethy/vim-illuminate" })
 	use({ "onsails/lspkind.nvim" })
@@ -94,7 +98,6 @@ return packer.startup(function(use)
 	-- DAP
 	use({ "mfussenegger/nvim-dap"})
 	use({ "rcarriga/nvim-dap-ui"})
-	use({ "ravenxrz/DAPInstall.nvim"})
 
 	-- Markdown
 	-- install without yarn or npm
