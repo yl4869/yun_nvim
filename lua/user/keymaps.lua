@@ -1,6 +1,5 @@
 -- Shorten function name
-local keymap = vim.keymap.set
--- Silent keymap option
+local keymap = vim.keymap.set -- Silent keymap option
 local opts = { silent = true }
 
 --Remap space as leader key
@@ -61,7 +60,7 @@ keymap("n", "<leader>ft", ":Telescope live_grep<CR>", opts)
 keymap("n", "<leader>fp", ":Telescope projects<CR>", opts)
 keymap("n", "<leader>fb", ":Telescope buffers<CR>", opts)
 
--- Git
+-- Git.
 keymap("n", "<leader>gg", "<cmd>lua _LAZYGIT_TOGGLE()<CR>", opts)
 
 -- Comment
@@ -78,3 +77,9 @@ keymap("n", "<leader>dr", "<cmd>lua require'dap'.repl.toggle()<cr>", opts)
 keymap("n", "<leader>dl", "<cmd>lua require'dap'.run_last()<cr>", opts)
 keymap("n", "<leader>du", "<cmd>lua require'dapui'.toggle()<cr>", opts)
 keymap("n", "<leader>dt", "<cmd>lua require'dap'.terminate()<cr>", opts)
+
+--Hop 
+keymap("n", "<leader>k", "<cmd>HopWordBC<cr>")
+keymap("n", "<leader>j", "<cmd>HopWordAC<cr>")
+keymap("n", "<leader>h", "<cmd>HopWordBC<cr>")
+keymap("n", "<leader>l", "<cmd>HopWordAC<cr>")

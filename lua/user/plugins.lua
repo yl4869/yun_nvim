@@ -1,8 +1,7 @@
 local fn = vim.fn
 
 -- Automatically install packer
-local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim"
-if fn.empty(fn.glob(install_path)) > 0 then
+local install_path = fn.stdpath("data") .. "/site/pack/packer/start/packer.nvim" if fn.empty(fn.glob(install_path)) > 0 then
 	PACKER_BOOTSTRAP = fn.system({
 		"git",
 		"clone",
@@ -107,6 +106,16 @@ return packer.startup(function(use)
 			vim.fn["mkdp#util#install"]()
 		end,
 	})
+
+  -- easymotion
+  use {
+    'phaazon/hop.nvim',
+    branch = 'v2', -- optional but strongly recommended
+    config = function()
+    -- you can configure Hop the way you like here; see :h hop-config
+    require'hop'.setup { keys = 'etovxqpdygfblzhckisuran' }
+    end
+  }
 
     use 'simrat39/rust-tools.nvim'
 
